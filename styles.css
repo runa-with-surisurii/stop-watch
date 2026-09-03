@@ -9,9 +9,7 @@
   box-sizing: border-box;
 }
 
-html {
-  font-size: 62.5%;
-}
+html { font-size: 62.5%; }
 
 body {
   height: 100vh;
@@ -20,30 +18,12 @@ body {
   font-weight: 300;
 }
 
-/* ------------------------ */
-/* Utility Classes */
-/* ------------------------ */
-.u-display-none {
-  display: none;
-}
-
-.u-push-right {
-  float: right;
-}
-
-/* When we add this class to an element,
- it will disable the text selection on that. */
-.u-noselect {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
+.u-display-none { display: none !important; }
+.u-push-right { float: right; }
+.no-select { user-select: none; }
 
 /* ------------------------ */
-/* App */
+/* Header & mode switcher */
 /* ------------------------ */
 .heading {
   background-color: rgb(24, 24, 24);
@@ -52,21 +32,36 @@ body {
   border-bottom: 2px solid rgb(28, 28, 28);
 }
 
-.heading h1 {
-  font-size: 1.8rem;
+.heading h1 { font-size: 1.8rem; color: white; }
+
+.mode-switcher {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.mode-btn {
+  padding: 0.9rem 2.4rem;
+  border: 1px solid rgb(70, 70, 70);
+  border-radius: 2rem;
+  background: rgb(25, 25, 25);
+  color: rgb(170, 170, 170);
+  font: 300 1.6rem "Lato", sans-serif;
+  cursor: pointer;
+}
+
+.mode-btn.active {
+  background: rgb(61, 61, 61);
   color: white;
 }
 
-.stopwatch-container {
-  text-align: center;
-  margin-top: 6rem;
-}
-
-.stopwatch {
-  font-size: 12rem;
-  color: #fff;
-  font-weight: 100;
-}
+/* ------------------------ */
+/* Display & controls */
+/* ------------------------ */
+.stopwatch-container { text-align: center; margin-top: 6rem; }
+.stopwatch { font-size: 12rem; color: #fff; font-weight: 100; }
+.timer-container { margin-top: 4rem; }
 
 .actions {
   margin-top: 6rem;
@@ -74,6 +69,34 @@ body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.timer-setup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 5rem;
+  color: rgb(190, 190, 190);
+  font-size: 1.6rem;
+}
+
+.timer-setup input {
+  width: 8rem;
+  padding: 0.8rem;
+  border: 1px solid rgb(70, 70, 70);
+  border-radius: 0.6rem;
+  background: rgb(25, 25, 25);
+  color: white;
+  font: 300 1.8rem "Lato", sans-serif;
+  text-align: center;
+}
+
+.timer-setup input:disabled { opacity: 0.55; }
+.timer-finished { animation: timerFinished 0.4s ease-in-out 3; }
+
+@keyframes timerFinished {
+  50% { transform: scale(1.05); }
 }
 
 /* ------------------------ */
@@ -89,116 +112,44 @@ body {
   transition: all 0.1s;
 }
 
-.btn:active,
-.btn:focus {
-  outline: none;
-}
-
-.btn-default {
-  background-color: rgb(61, 61, 61);
-  color: #fff;
-}
-
-.btn-default:hover {
-  background-color: rgb(50, 50, 50);
-}
-
-.btn-default:active,
-.btn-default:focus {
-  background-color: rgb(37, 37, 37);
-}
-
-.btn-green {
-  background-color: rgb(32, 53, 33);
-  color: rgb(121, 218, 116);
-}
-
-.btn-green:hover {
-  background-color: rgb(28, 40, 28);
-}
-
-.btn-green:active,
-.btn-green:focus {
-  background-color: rgb(23, 33, 23);
-}
-
-.btn-red {
-  background-color: rgb(57, 25, 22);
-  color: rgb(226, 74, 59);
-}
-
-.btn-red:hover {
-  background-color: rgb(40, 22, 20);
-}
-
-.btn-red:active,
-.btn-red:focus {
-  background-color: rgb(35, 17, 16);
-}
-
-.btn:disabled {
-  background-color: rgb(20, 20, 20);
-  color: rgb(140, 140, 140);
-  cursor: not-allowed;
-}
+.btn:active, .btn:focus, .mode-btn:focus { outline: none; }
+.btn-default { background-color: rgb(61, 61, 61); color: #fff; }
+.btn-default:hover { background-color: rgb(50, 50, 50); }
+.btn-default:active, .btn-default:focus { background-color: rgb(37, 37, 37); }
+.btn-green { background-color: rgb(32, 53, 33); color: rgb(121, 218, 116); }
+.btn-green:hover { background-color: rgb(28, 40, 28); }
+.btn-green:active, .btn-green:focus { background-color: rgb(23, 33, 23); }
+.btn-red { background-color: rgb(57, 25, 22); color: rgb(226, 74, 59); }
+.btn-red:hover { background-color: rgb(40, 22, 20); }
+.btn-red:active, .btn-red:focus { background-color: rgb(35, 17, 16); }
+.btn:disabled { background-color: rgb(20, 20, 20); color: rgb(140, 140, 140); cursor: not-allowed; }
 
 /* ------------------------ */
-/* Media Queries */
+/* Responsive */
 /* ------------------------ */
 @media only screen and (max-width: 675px) {
-  html {
-    font-size: 56.25%;
-  }
-
-  .stopwatch-container {
-    margin-top: 8rem;
-  }
+  html { font-size: 56.25%; }
+  .stopwatch-container { margin-top: 8rem; }
 }
 
 @media only screen and (max-width: 530px) {
-  html {
-    font-size: 48%;
-  }
-
-  .actions {
-    width: 45rem;
-  }
+  html { font-size: 48%; }
+  .actions { width: 45rem; }
 }
 
 @media only screen and (max-width: 450px) {
-  html {
-    font-size: 45.5%;
-  }
-
-  .actions {
-    width: 40rem;
-  }
+  html { font-size: 45.5%; }
+  .actions { width: 40rem; }
 }
 
 @media only screen and (max-width: 400px) {
-  html {
-    font-size: 40%;
-  }
-
-  .actions {
-    width: 100%;
-    padding: 0 4rem;
-  }
+  html { font-size: 40%; }
+  .actions { width: 100%; padding: 0 4rem; }
 }
 
-@media only screen and (max-width: 350px) {
-  html {
-    font-size: 37%;
-  }
-}
+@media only screen and (max-width: 350px) { html { font-size: 37%; } }
 
 @media only screen and (max-width: 315px) {
-  .stopwatch {
-    font-size: 10rem;
-  }
-
-  .btn {
-    width: 7rem;
-    height: 7rem;
-  }
+  .stopwatch { font-size: 10rem; }
+  .btn { width: 7rem; height: 7rem; }
 }
