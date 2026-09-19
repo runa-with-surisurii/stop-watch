@@ -70,11 +70,23 @@ select {
 }
 
 .heading h1 {
-  font-size: 2.6rem;
+  font-size: 3rem;
   font-weight: 300;
   color: #fff;
   letter-spacing: 0.08rem;
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.heading h1::before {
+  content: "◷";
+  margin-right: 0.8rem;
+  font-size: 2.7rem;
+}
+
+.heading h1::after {
+  content: " ✿";
+  color: #ffd0e5;
+  text-shadow: 0 0 14px rgba(255, 190, 225, 0.8);
 }
 
 .mode-switcher {
@@ -82,11 +94,14 @@ select {
   z-index: 2;
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 1.5rem;
+  gap: 0;
+  margin: 1.5rem auto 0;
+  width: 42rem;
+  max-width: 90vw;
 }
 
 .mode-btn {
+  flex: 1;
   padding: 0.9rem 2.4rem;
   border: 1px solid rgba(255, 255, 255, 0.38);
   border-radius: 2rem;
@@ -122,10 +137,10 @@ select {
 }
 
 .stopwatch-container {
-  width: min(52rem, 82vw);
-  height: min(52rem, 82vw);
-  max-width: 52rem;
-  max-height: 52rem;
+  width: min(48rem, 72vw);
+  height: min(48rem, 72vw);
+  max-width: 48rem;
+  max-height: 48rem;
   margin: 5rem auto 0;
   display: flex;
   flex-direction: column;
@@ -152,8 +167,30 @@ select {
 }
 
 .timer-container {
-  margin-top: 3rem;
+  margin-top: 4rem;
   position: relative;
+  overflow: visible;
+}
+
+.timer-container::after {
+  content: "✿";
+  position: absolute;
+  top: 1rem;
+  left: 7%;
+  font-size: 5.5rem;
+  color: rgba(255, 205, 228, 0.9);
+  transform: rotate(-25deg);
+  text-shadow: 0 0 20px rgba(255, 170, 220, 0.55);
+  pointer-events: none;
+}
+
+#timer-mode .timer-container {
+  overflow: visible;
+}
+
+#timer-mode .timer-container .stopwatch {
+  position: relative;
+  z-index: 2;
 }
 
 .timer-container::before {
@@ -172,12 +209,12 @@ select {
 .timer-setup {
   position: relative;
   z-index: 3;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: auto 7.5rem auto 7.5rem auto minmax(14rem, 15rem);
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
-  width: min(62rem, 92vw);
+  width: min(76rem, 92vw);
   margin: 3rem auto 0;
   padding: 1.6rem 2rem;
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -251,7 +288,7 @@ select {
   z-index: 4;
   display: flex;
   justify-content: center;
-  gap: 2.5rem;
+  gap: 2rem;
   margin: -1rem auto 0;
   width: auto;
   left: auto;
@@ -259,8 +296,8 @@ select {
 }
 
 .btn {
-  width: 9rem;
-  height: 9rem;
+  width: 8.5rem;
+  height: 8.5rem;
   border-radius: 50%;
   font-size: 1.8rem;
   border: 1px solid rgba(255, 255, 255, 0.45);
@@ -322,14 +359,28 @@ select {
   html { font-size: 56.25%; }
 
   .stopwatch-container {
-    width: min(43rem, 82vw);
-    height: min(43rem, 82vw);
+    width: min(40rem, 78vw);
+    height: min(40rem, 78vw);
     margin-top: 4rem;
   }
 
+  .timer-setup {
+    grid-template-columns: auto 7rem auto 7rem;
+  }
+
+  .timer-setup select {
+    grid-column: 2 / 4;
+  }
+
   .timer-container::before {
-    top: 6.8rem;
-    font-size: 2.1rem;
+    top: 6.5rem;
+    font-size: 2rem;
+  }
+
+  .timer-container::after {
+    left: 5%;
+    top: 0.5rem;
+    font-size: 4.5rem;
   }
 
   .timer-setup {
@@ -347,6 +398,19 @@ select {
   .stopwatch-container {
     width: min(36rem, 84vw);
     height: min(36rem, 84vw);
+  }
+
+  .timer-setup {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .timer-setup label {
+    text-align: right;
+  }
+
+  .timer-setup select {
+    grid-column: 1 / -1;
+    justify-self: center;
   }
 
   .actions {
