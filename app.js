@@ -1,16 +1,8 @@
 (function () {
   // ---------- Shared UI helpers ----------
-  function hide(element) {
-    element.classList.add("u-display-none");
-  }
-
-  function show(element) {
-    element.classList.remove("u-display-none");
-  }
-
-  function disable(element, value) {
-    element.disabled = value;
-  }
+  function hide(element) { element.classList.add("u-display-none"); }
+  function show(element) { element.classList.remove("u-display-none"); }
+  function disable(element, value) { element.disabled = value; }
 
   // ---------- Stopwatch ----------
   var startButton = document.querySelector("#js--start");
@@ -30,43 +22,29 @@
     var m = minutes < 10 ? "0" + minutes : minutes.toString();
     stopwatch.textContent = m + ":" + s + "." + cs;
   }
-
   function stopStopwatch() {
     if (stopwatchTimerId !== null) {
       clearInterval(stopwatchTimerId);
       stopwatchTimerId = null;
     }
   }
-
   displayStopwatch(0);
 
   startButton.addEventListener("click", function () {
     if (stopwatchTimerId !== null) return;
-    hide(startButton);
-    show(stopButton);
-    disable(resetButton, true);
+    hide(startButton); show(stopButton); disable(resetButton, true);
     stopwatchStartedAt = Date.now() - stopwatchTime;
-
     stopwatchTimerId = setInterval(function () {
       stopwatchTime = Date.now() - stopwatchStartedAt;
       displayStopwatch(stopwatchTime);
     }, 10);
   });
-
   stopButton.addEventListener("click", function () {
-    stopStopwatch();
-    hide(stopButton);
-    show(startButton);
-    disable(resetButton, false);
+    stopStopwatch(); hide(stopButton); show(startButton); disable(resetButton, false);
   });
-
   resetButton.addEventListener("click", function () {
-    stopStopwatch();
-    stopwatchTime = 0;
-    displayStopwatch(0);
-    hide(stopButton);
-    show(startButton);
-    disable(resetButton, true);
+    stopStopwatch(); stopwatchTime = 0; displayStopwatch(0);
+    hide(stopButton); show(startButton); disable(resetButton, true);
   });
 
   // ---------- Countdown Timer ----------
@@ -86,9 +64,9 @@
     if (alarmAudioContext.state === "suspended") alarmAudioContext.resume();
 
     var patterns = {
-      classic: [880, 660, 880, 660, 880],
-      double: [1000, 1000, 700, 700, 1000],
-      digital: [1200, 900, 1200, 900, 1500, 900]
+      classic: [880, 660, 880, 660, 880, 660, 880, 660, 880, 660],
+      double: [1000, 1000, 700, 700, 1000, 1000, 700, 700, 1000, 1000],
+      digital: [1200, 900, 1200, 900, 1500, 900, 1200, 900, 1500, 900, 1200, 900]
     };
     var frequencies = patterns[alarmSoundSelect.value] || patterns.classic;
     var start = alarmAudioContext.currentTime;
@@ -100,7 +78,7 @@
       oscillator.type = "sine";
       oscillator.frequency.value = frequency;
       gain.gain.setValueAtTime(0.0001, time);
-      gain.gain.exponentialRampToValueAtTime(0.25, time + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.6, time + 0.02);
       gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.18);
       oscillator.connect(gain);
       gain.connect(alarmAudioContext.destination);
@@ -108,6 +86,7 @@
       oscillator.stop(time + 0.2);
     });
   }
+
   var timerInterval = null;
   var timerRemaining = 300;
   var timerInitial = 300;
@@ -122,21 +101,18 @@
     timerSecondsInput.value = seconds;
     return minutes * 60 + seconds;
   }
-
   function displayTimer(totalSeconds) {
     var safeSeconds = Math.max(0, Math.ceil(totalSeconds));
     var minutes = Math.floor(safeSeconds / 60);
     var seconds = safeSeconds % 60;
     timerDisplay.textContent = (minutes < 10 ? "0" : "") + minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
   }
-
   function stopTimer() {
     if (timerInterval !== null) {
       clearInterval(timerInterval);
       timerInterval = null;
     }
   }
-
   function finishTimer() {
     stopTimer();
     timerRemaining = 0;
@@ -145,11 +121,8 @@
     show(timerStartButton);
     playAlarm();
     timerDisplay.classList.add("timer-finished");
-    setTimeout(function () {
-      timerDisplay.classList.remove("timer-finished");
-    }, 1200);
+    setTimeout(function () { timerDisplay.classList.remove("timer-finished"); }, 1200);
   }
-
   function startTimer() {
     if (timerInterval !== null) return;
     if (timerRemaining <= 0) {
@@ -157,52 +130,43 @@
       timerInitial = timerRemaining;
     }
     if (timerRemaining <= 0) return;
-
     hide(timerStartButton);
     show(timerPauseButton);
     timerMinutesInput.disabled = true;
     timerSecondsInput.disabled = true;
     timerEndAt = Date.now() + timerRemaining * 1000;
-
     timerInterval = setInterval(function () {
       timerRemaining = Math.max(0, (timerEndAt - Date.now()) / 1000);
       displayTimer(timerRemaining);
       if (timerRemaining <= 0) finishTimer();
     }, 100);
   }
-
   timerStartButton.addEventListener("click", startTimer);
-
   timerPauseButton.addEventListener("click", function () {
     if (timerInterval === null) return;
     timerRemaining = Math.max(0, (timerEndAt - Date.now()) / 1000);
     stopTimer();
-    hide(timerPauseButton);
-    show(timerStartButton);
+    hide(timerPauseButton); show(timerStartButton);
     timerMinutesInput.disabled = false;
     timerSecondsInput.disabled = false;
     displayTimer(timerRemaining);
   });
-
   timerResetButton.addEventListener("click", function () {
     stopTimer();
     timerRemaining = getTimerInputSeconds();
     timerInitial = timerRemaining;
     displayTimer(timerRemaining);
-    hide(timerPauseButton);
-    show(timerStartButton);
+    hide(timerPauseButton); show(timerStartButton);
     timerMinutesInput.disabled = false;
     timerSecondsInput.disabled = false;
     timerDisplay.classList.remove("timer-finished");
   });
-
   function updateTimerFromInputs() {
     if (timerInterval !== null) return;
     timerRemaining = getTimerInputSeconds();
     timerInitial = timerRemaining;
     displayTimer(timerRemaining);
   }
-
   timerMinutesInput.addEventListener("input", updateTimerFromInputs);
   timerSecondsInput.addEventListener("input", updateTimerFromInputs);
   displayTimer(timerRemaining);
@@ -215,20 +179,15 @@
   var appTitle = document.querySelector("#app-title");
 
   stopwatchModeButton.addEventListener("click", function () {
-    show(stopwatchMode);
-    hide(timerMode);
-    stopwatchModeButton.classList.add("active");
-    timerModeButton.classList.remove("active");
+    show(stopwatchMode); hide(timerMode);
+    stopwatchModeButton.classList.add("active"); timerModeButton.classList.remove("active");
     stopwatchModeButton.setAttribute("aria-selected", "true");
     timerModeButton.setAttribute("aria-selected", "false");
     appTitle.textContent = "Stopwatch";
   });
-
   timerModeButton.addEventListener("click", function () {
-    hide(stopwatchMode);
-    show(timerMode);
-    timerModeButton.classList.add("active");
-    stopwatchModeButton.classList.remove("active");
+    hide(stopwatchMode); show(timerMode);
+    timerModeButton.classList.add("active"); stopwatchModeButton.classList.remove("active");
     timerModeButton.setAttribute("aria-selected", "true");
     stopwatchModeButton.setAttribute("aria-selected", "false");
     appTitle.textContent = "Timer";
