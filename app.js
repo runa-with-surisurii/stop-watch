@@ -76,6 +76,38 @@
   var timerStartButton = document.querySelector("#timer-start");
   var timerPauseButton = document.querySelector("#timer-pause");
   var timerResetButton = document.querySelector("#timer-reset");
+  var alarmSoundSelect = document.querySelector("#alarm-sound");
+  var alarmAudioContext = null;
+
+  function playAlarm() {
+    var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return;
+    alarmAudioContext = alarmAudioContext || new AudioContextClass();
+    if (alarmAudioContext.state === "suspended") alarmAudioContext.resume();
+
+    var patterns = {
+      classic: [880, 660, 880, 660, 880],
+      double: [1000, 1000, 700, 700, 1000],
+      digital: [1200, 900, 1200, 900, 1500, 900]
+    };
+    var frequencies = patterns[alarmSoundSelect.value] || patterns.classic;
+    var start = alarmAudioContext.currentTime;
+
+    frequencies.forEach(function (frequency, index) {
+      var oscillator = alarmAudioContext.createOscillator();
+      var gain = alarmAudioContext.createGain();
+      var time = start + index * 0.22;
+      oscillator.type = "sine";
+      oscillator.frequency.value = frequency;
+      gain.gain.setValueAtTime(0.0001, time);
+      gain.gain.exponentialRampToValueAtTime(0.25, time + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.18);
+      oscillator.connect(gain);
+      gain.connect(alarmAudioContext.destination);
+      oscillator.start(time);
+      oscillator.stop(time + 0.2);
+    });
+  }
   var timerInterval = null;
   var timerRemaining = 300;
   var timerInitial = 300;
@@ -111,6 +143,7 @@
     displayTimer(0);
     hide(timerPauseButton);
     show(timerStartButton);
+    playAlarm();
     timerDisplay.classList.add("timer-finished");
     setTimeout(function () {
       timerDisplay.classList.remove("timer-finished");
