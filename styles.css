@@ -1,5 +1,5 @@
 /* ------------------------ */
-/* Basics */
+/* Ocean & Flower Glass Theme */
 /* ------------------------ */
 *,
 *::after,
@@ -9,13 +9,49 @@
   box-sizing: border-box;
 }
 
-html { font-size: 62.5%; }
+html {
+  font-size: 62.5%;
+}
 
 body {
-  height: 100vh;
-  background-color: rgb(13, 13, 13);
+  min-height: 100vh;
+  background:
+    linear-gradient(135deg, rgba(26, 54, 93, 0.30), rgba(224, 129, 169, 0.24)),
+    url("https://images.unsplash.com/photo-1777806665249-d1a7d03fcff1?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=82&w=2400")
+    center center / cover fixed no-repeat;
+  color: #fff;
   font-family: "Lato", sans-serif, helvetica;
   font-weight: 300;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(18, 43, 78, 0.22), rgba(45, 23, 65, 0.18));
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: "✿";
+  position: fixed;
+  left: 3vw;
+  bottom: 3vh;
+  font-size: 10rem;
+  color: rgba(255, 210, 235, 0.65);
+  text-shadow: 0 0 30px rgba(255, 170, 220, 0.5);
+  transform: rotate(-15deg);
+  pointer-events: none;
+  z-index: 0;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
 }
 
 .u-display-none { display: none !important; }
@@ -26,130 +62,313 @@ body {
 /* Header & mode switcher */
 /* ------------------------ */
 .heading {
-  background-color: rgb(24, 24, 24);
+  position: relative;
+  z-index: 2;
   text-align: center;
-  padding: 0.8rem;
-  border-bottom: 2px solid rgb(28, 28, 28);
+  padding: 2rem 1rem 0.5rem;
+  background: transparent;
 }
 
-.heading h1 { font-size: 1.8rem; color: white; }
+.heading h1 {
+  font-size: 2.6rem;
+  font-weight: 300;
+  color: #fff;
+  letter-spacing: 0.08rem;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
 
 .mode-switcher {
+  position: relative;
+  z-index: 2;
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 }
 
 .mode-btn {
   padding: 0.9rem 2.4rem;
-  border: 1px solid rgb(70, 70, 70);
+  border: 1px solid rgba(255, 255, 255, 0.38);
   border-radius: 2rem;
-  background: rgb(25, 25, 25);
-  color: rgb(170, 170, 170);
+  background: rgba(255, 255, 255, 0.13);
+  color: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   font: 300 1.6rem "Lato", sans-serif;
   cursor: pointer;
+  transition: 0.25s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.mode-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: translateY(-1px);
 }
 
 .mode-btn.active {
-  background: rgb(61, 61, 61);
-  color: white;
+  background: linear-gradient(135deg, rgba(255, 154, 203, 0.88), rgba(191, 157, 255, 0.78));
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 28px rgba(220, 120, 190, 0.3);
 }
 
 /* ------------------------ */
-/* Display & controls */
+/* Main panels */
 /* ------------------------ */
-.stopwatch-container { text-align: center; margin-top: 6rem; }
-.stopwatch { font-size: 12rem; color: #fff; font-weight: 100; }
-.timer-container { margin-top: 4rem; }
-
-.actions {
-  margin-top: 6rem;
-  width: 50rem;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+.mode-panel {
+  position: relative;
+  z-index: 1;
+  min-height: 70vh;
 }
 
-.timer-setup {
+.stopwatch-container {
+  width: min(52rem, 82vw);
+  height: min(52rem, 82vw);
+  max-width: 52rem;
+  max-height: 52rem;
+  margin: 5rem auto 0;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.22), rgba(255, 180, 220, 0.12));
+  box-shadow:
+    inset 0 0 35px rgba(255, 255, 255, 0.13),
+    0 18px 60px rgba(25, 31, 70, 0.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.stopwatch {
+  font-size: clamp(6.5rem, 11vw, 12rem);
+  color: #fff;
+  font-weight: 100;
+  letter-spacing: 0.05rem;
+  text-shadow: 0 4px 22px rgba(26, 36, 75, 0.35);
+}
+
+.timer-container {
+  margin-top: 3rem;
+}
+
+.timer-container::before {
+  content: "Timer";
+  position: absolute;
+  transform: translateY(-11rem);
+  font-size: 2.4rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+/* ------------------------ */
+/* Timer setup */
+/* ------------------------ */
+.timer-setup {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 0.8rem;
-  margin-top: 5rem;
-  color: rgb(190, 190, 190);
+  width: min(62rem, 92vw);
+  margin: 3rem auto 0;
+  padding: 1.6rem 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 2rem;
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.5rem;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 12px 35px rgba(25, 31, 70, 0.16);
+}
+
+.timer-setup input,
+.timer-setup select {
+  min-height: 4rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.17);
+  color: #fff;
+  outline: none;
   font-size: 1.6rem;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .timer-setup input {
-  width: 8rem;
-  padding: 0.8rem;
-  border: 1px solid rgb(70, 70, 70);
-  border-radius: 0.6rem;
-  background: rgb(25, 25, 25);
-  color: white;
-  font: 300 1.8rem "Lato", sans-serif;
-  text-align: center;
+  width: 7.5rem;
 }
 
-.timer-setup input:disabled { opacity: 0.55; }
-.timer-finished { animation: timerFinished 0.4s ease-in-out 3; }
+.timer-setup select {
+  min-width: 15rem;
+}
+
+.timer-setup select option {
+  color: #222;
+  background: #fff;
+}
+
+.timer-setup input::placeholder {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.timer-setup input:focus,
+.timer-setup select:focus {
+  border-color: rgba(255, 190, 225, 0.95);
+  box-shadow: 0 0 0 3px rgba(255, 175, 220, 0.15);
+}
+
+.timer-setup input:disabled {
+  opacity: 0.55;
+}
+
+.timer-finished {
+  animation: timerFinished 0.4s ease-in-out 3;
+  box-shadow:
+    0 0 45px rgba(255, 184, 222, 0.75),
+    inset 0 0 35px rgba(255, 255, 255, 0.2);
+}
 
 @keyframes timerFinished {
-  50% { transform: scale(1.05); }
+  50% { transform: scale(1.045); }
 }
 
 /* ------------------------ */
 /* Buttons */
 /* ------------------------ */
-.btn {
-  width: 10rem;
-  height: 10rem;
-  border-radius: 500px;
-  font-size: 2rem;
-  border: none;
-  cursor: pointer;
-  transition: all 0.1s;
+.actions {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin: -1rem auto 0;
+  width: auto;
+  left: auto;
+  transform: none;
 }
 
-.btn:active, .btn:focus, .mode-btn:focus { outline: none; }
-.btn-default { background-color: rgb(61, 61, 61); color: #fff; }
-.btn-default:hover { background-color: rgb(50, 50, 50); }
-.btn-default:active, .btn-default:focus { background-color: rgb(37, 37, 37); }
-.btn-green { background-color: rgb(32, 53, 33); color: rgb(121, 218, 116); }
-.btn-green:hover { background-color: rgb(28, 40, 28); }
-.btn-green:active, .btn-green:focus { background-color: rgb(23, 33, 23); }
-.btn-red { background-color: rgb(57, 25, 22); color: rgb(226, 74, 59); }
-.btn-red:hover { background-color: rgb(40, 22, 20); }
-.btn-red:active, .btn-red:focus { background-color: rgb(35, 17, 16); }
-.btn:disabled { background-color: rgb(20, 20, 20); color: rgb(140, 140, 140); cursor: not-allowed; }
+.btn {
+  width: 9rem;
+  height: 9rem;
+  border-radius: 50%;
+  font-size: 1.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: 0.2s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(25, 31, 70, 0.2);
+}
+
+.btn:hover {
+  transform: translateY(-3px) scale(1.03);
+}
+
+.btn:active,
+.btn:focus,
+.mode-btn:focus {
+  outline: none;
+}
+
+.btn-default {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.btn-default:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.btn-green {
+  background: linear-gradient(145deg, rgba(255, 143, 198, 0.94), rgba(222, 133, 191, 0.76));
+  color: #fff;
+  box-shadow: 0 12px 34px rgba(222, 105, 176, 0.38);
+}
+
+.btn-green:hover {
+  background: linear-gradient(145deg, rgba(255, 160, 208, 0.98), rgba(225, 145, 201, 0.86));
+}
+
+.btn-red {
+  background: linear-gradient(145deg, rgba(142, 130, 210, 0.82), rgba(92, 112, 181, 0.74));
+  color: #fff;
+}
+
+.btn-red:hover {
+  background: linear-gradient(145deg, rgba(157, 145, 224, 0.9), rgba(104, 125, 195, 0.82));
+}
+
+.btn:disabled {
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
+}
 
 /* ------------------------ */
 /* Responsive */
 /* ------------------------ */
 @media only screen and (max-width: 675px) {
   html { font-size: 56.25%; }
-  .stopwatch-container { margin-top: 8rem; }
+
+  .stopwatch-container {
+    width: min(43rem, 82vw);
+    height: min(43rem, 82vw);
+    margin-top: 4rem;
+  }
+
+  .timer-container::before {
+    transform: translateY(-9rem);
+  }
+
+  .timer-setup {
+    margin-top: 2rem;
+  }
 }
 
 @media only screen and (max-width: 530px) {
   html { font-size: 48%; }
-  .actions { width: 45rem; }
-}
 
-@media only screen and (max-width: 450px) {
-  html { font-size: 45.5%; }
-  .actions { width: 40rem; }
+  .mode-switcher {
+    margin-top: 1rem;
+  }
+
+  .stopwatch-container {
+    width: min(36rem, 84vw);
+    height: min(36rem, 84vw);
+  }
+
+  .actions {
+    gap: 1.5rem;
+  }
+
+  .btn {
+    width: 7.5rem;
+    height: 7.5rem;
+  }
+
+  .timer-setup {
+    border-radius: 1.5rem;
+  }
 }
 
 @media only screen and (max-width: 400px) {
   html { font-size: 40%; }
-  .actions { width: 100%; padding: 0 4rem; }
-}
 
-@media only screen and (max-width: 350px) { html { font-size: 37%; } }
+  .stopwatch-container {
+    width: 32rem;
+    height: 32rem;
+  }
 
-@media only screen and (max-width: 315px) {
-  .stopwatch { font-size: 10rem; }
-  .btn { width: 7rem; height: 7rem; }
+  .timer-setup {
+    width: 94vw;
+  }
 }
